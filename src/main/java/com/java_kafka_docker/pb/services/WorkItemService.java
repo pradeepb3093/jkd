@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -23,6 +24,10 @@ public class WorkItemService {
     @Autowired
     public WorkItemService(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
+    }
+
+    public List<WorkItemCollection> getAllWorkItems() {
+        return mongoTemplate.findAll(WorkItemCollection.class);
     }
 
     public WorkItemCollection createWorkItem(WorkItemRequest workItemRequest) {

@@ -2,7 +2,6 @@ package com.java_kafka_docker.pb.controllers;
 
 import com.java_kafka_docker.pb.dto.modal.WorkItemCollection;
 import com.java_kafka_docker.pb.dto.request.WorkItemRequest;
-import com.java_kafka_docker.pb.dto.response.WorkItemResponse;
 import com.java_kafka_docker.pb.services.WorkItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
+import java.util.List;
 
 
 @RestController
@@ -18,7 +17,7 @@ import java.util.UUID;
 @Slf4j
 public class WorkItemController {
 
-    private WorkItemService workItemService;
+    private final WorkItemService workItemService;
 
     @Autowired
     public WorkItemController(WorkItemService workItemService) {
@@ -26,10 +25,16 @@ public class WorkItemController {
     }
 
     @GetMapping
-    public ResponseEntity<WorkItemResponse> getWorkItems() {
+    public ResponseEntity<List<WorkItemCollection>> getWorkItems() {
         log.info("getWorkItems");
-        WorkItemResponse response = new WorkItemResponse(UUID.randomUUID(), "Success");
-        return ResponseEntity.ok(response);
+        try {
+            List<WorkItemCollection> response = workItemService.getAllWorkItems();
+            return ResponseEntity.ok(response);
+        }
+        catch (Exception e){
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping
