@@ -1,15 +1,12 @@
-package com.java_kafka_docker.pb.dto.response;
+package com.java_kafka_docker.pb.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class WorkItemResponse {
-    private UUID _id;
+public class WorkItemRequest {
     private String status;
 }
